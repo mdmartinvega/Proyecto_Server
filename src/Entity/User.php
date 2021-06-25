@@ -65,6 +65,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $image;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=city::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $city;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -222,6 +228,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCity(): ?city
+    {
+        return $this->city;
+    }
+
+    public function setCity(?city $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }
