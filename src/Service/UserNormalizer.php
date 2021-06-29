@@ -45,6 +45,7 @@ class UserNormalizer {
             'age' => $user->getAge(),
             'bio' => $user->getBio(),
             'languages' => $user->getLanguages(),
+            'interests' => $user->getInterests(),
             'yearsLiving' => $user->getYearsLiving(),
             'image' => $user->getImage(),
             'city' => $user->getCity()->getName() //Ponemos getName para evitar el error de relaciones

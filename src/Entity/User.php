@@ -72,9 +72,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $city;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="simple_array")
      */
     private $languages = [];
+
+    /**
+     * @ORM\Column(type="simple_array")
+     */
+    private $interests = [];
 
 
     public function getId(): ?int
@@ -255,11 +260,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->languages;
     }
 
-    public function setLanguages(?array $languages): self
+    public function setLanguages(array $languages): self
     {
         $this->languages = $languages;
 
         return $this;
     }
+
+    public function getInterests(): ?array
+    {
+        return $this->interests;
+    }
+
+    public function setInterests(array $interests): self
+    {
+        $this->interests = $interests;
+
+        return $this;
+    }
+
 
 }
