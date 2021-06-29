@@ -38,14 +38,16 @@ class UserNormalizer {
         // }
         
         return [
+            'id' => $user->getId(),
             'name' => $user->getName(),
             'lastName' => $user->getLastName(),
             'email' => $user->getEmail(),
             'age' => $user->getAge(),
             'bio' => $user->getBio(),
+            'languages' => $user->getLanguages(),
             'yearsLiving' => $user->getYearsLiving(),
             'image' => $user->getImage(),
-            'city' => $user->getCity()->getName()
+            'city' => $user->getCity()->getName() //Ponemos getName para evitar el error de relaciones
         ];
     }
 }

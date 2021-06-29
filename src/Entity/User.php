@@ -71,6 +71,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $city;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $languages = [];
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -243,4 +249,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getLanguages(): ?array
+    {
+        return $this->languages;
+    }
+
+    public function setLanguages(?array $languages): self
+    {
+        $this->languages = $languages;
+
+        return $this;
+    }
+
 }

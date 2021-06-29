@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\UserNormalizer;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @Route("/api/buddies", name="api_buddies_")
@@ -36,6 +38,13 @@ class ApiBuddiesController extends AbstractController
         //     }
         //     return $this->json($data);
         // }
+
+        // $user = new User();
+        // $user->setAge('13');
+        // $user->setInterests(['hola', 'adios']);
+
+        // $entityManager->persist($user);
+        // $entityManager->flush();
 
        $result = $userRepository->findAll();
 
