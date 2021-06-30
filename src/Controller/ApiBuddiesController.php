@@ -39,12 +39,99 @@ class ApiBuddiesController extends AbstractController
         //     return $this->json($data);
         // }
 
-        // $user = new User();
-        // $user->setAge('13');
-        // $user->setInterests(['hola', 'adios']);
 
-        // $entityManager->persist($user);
-        // $entityManager->flush();
+       $result = $userRepository->findAll();
+
+        $data = [];
+
+        foreach ($result as $user) {
+            $data[]= $userNormalizer->userNormalizer($user);
+        }
+
+        return $this->json($data);
+    }
+
+    /**
+     * @Route(
+     *      "/{id}", 
+     *      name="get",
+     *      methods={"GET"},
+     *      requirements={
+     *          "id": "\d+"
+     *      }
+     * )
+     */
+    public function indexOneUser(int $id, Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+    {
+
+       $result = $userRepository->findAll();
+
+        $data = [];
+
+        foreach ($result as $user) {
+            $data[]= $userNormalizer->userNormalizer($user);
+        }
+
+        return $this->json($data);
+    }
+
+    /**
+     * @Route(
+     *      "", 
+     *      name="post",
+     *      methods={"POST"},
+     * )
+     */
+    public function add(Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+    {
+
+       $result = $userRepository->findAll();
+
+        $data = [];
+
+        foreach ($result as $user) {
+            $data[]= $userNormalizer->userNormalizer($user);
+        }
+
+        return $this->json($data);
+    }
+
+    /**
+     * @Route(
+     *      "/{id}", 
+     *      name="update",
+     *      methods={"PUT"},
+     *      requirements={
+     *          "id": "\d+"
+     *      }
+     * )
+     */
+    public function update(int $id, Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+    {
+
+       $result = $userRepository->findAll();
+
+        $data = [];
+
+        foreach ($result as $user) {
+            $data[]= $userNormalizer->userNormalizer($user);
+        }
+
+        return $this->json($data);
+    }
+
+        /**
+     * @Route(
+     *      "/{id}", 
+     *      name="delete",
+     *      methods={"DELETE"},
+     *      requirements={
+     *          "id": "\d+"
+     *      }
+     * )
+     */
+    public function remove(int $id, Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+    {
 
        $result = $userRepository->findAll();
 

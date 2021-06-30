@@ -81,6 +81,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $interests = [];
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar;
+
 
     public function getId(): ?int
     {
@@ -275,6 +280,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setInterests(array $interests): self
     {
         $this->interests = $interests;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
