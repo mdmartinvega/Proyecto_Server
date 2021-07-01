@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\CityRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\UserNormalizer;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -61,18 +63,12 @@ class ApiBuddiesController extends AbstractController
      *      }
      * )
      */
-    public function indexOneUser(int $id, Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+
+    public function indexOneUser(
+        User $user,
+        UserNormalizer $employeeNormalize): Response
     {
-
-       $result = $userRepository->findAll();
-
-        $data = [];
-
-        foreach ($result as $user) {
-            $data[]= $userNormalizer->userNormalizer($user);
-        }
-
-        return $this->json($data);
+        return $this->json($employeeNormalize->userNormalizer($user));
     }
 
     /**
@@ -82,18 +78,45 @@ class ApiBuddiesController extends AbstractController
      *      methods={"POST"},
      * )
      */
-    public function add(Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
-    {
+    public function add(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        CityRepository $cityRepository
+    ): Response {
 
-       $result = $userRepository->findAll();
+        $data = json_decode($request->getContent(), true);
+        dump($data);
+        dump($data['name']);
+        die();
 
-        $data = [];
+        $user = new User();
 
-        foreach ($result as $user) {
-            $data[]= $userNormalizer->userNormalizer($user);
-        }
+        $user->setName($data['name']);
+        $user->setLastName($data->get('lastName'));
+        $user->setAge($data->get('age'));
+        $user->setBio($data->get('bio'));
+        $user->setYearsLiving($data->get('yearsLiving'));
+        $user->setLanguages($data->get(['languages']));
+        $user->setInterests($data->get(['interests']));
 
-        return $this->json($data);
+  //      $city = $cityRepository->find($data['city']);
+  //      $user->setCity($city);
+
+        $entityManager->persist($user);
+        $entityManager->flush($user);
+
+        return $this->json(
+            $user,
+            Response::HTTP_CREATED,
+            [
+                'Location' => $this->generateUrl(
+                    'api_user_get',
+                    [
+                        'id' => $user->getId()
+                    ]
+                )
+            ]
+        );
     }
 
     /**
