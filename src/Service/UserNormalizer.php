@@ -48,7 +48,7 @@ class UserNormalizer {
             'interests' => $user->getInterests(),
             'yearsLiving' => $user->getYearsLiving(),
             'image' => $user->getImage(),
-            'city' => $user->getCity()->getName() //Ponemos getName para evitar el error de relaciones
+            'cityId' => $user->getCity()->getName() //Ponemos getName para evitar el error de relaciones
         ];
     }
 }

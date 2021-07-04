@@ -53,6 +53,19 @@ class ApiBuddiesController extends AbstractController
         return $this->json($data);
     }
 
+    // public function index(CityRepository $cityRepository): Response
+    // {
+    //     $result = $cityRepository->findAll();
+    //     $data = $result;
+
+    //     $resultado = [
+    //         "total" => 15,
+    //         "results" => $data
+    //     ];
+
+    //     return $this->json($resultado);
+    // }
+
     /**
      * @Route(
      *      "/{id}", 
@@ -85,37 +98,39 @@ class ApiBuddiesController extends AbstractController
     ): Response {
 
         $data = json_decode($request->getContent(), true);
-        dump($data);
-        dump($data['name']);
-        die();
+        // dump($data);
+        // dump($data['name']);
+        // die();
 
         $user = new User();
 
         $user->setName($data['name']);
-        $user->setLastName($data->get('lastName'));
-        $user->setAge($data->get('age'));
-        $user->setBio($data->get('bio'));
-        $user->setYearsLiving($data->get('yearsLiving'));
-        $user->setLanguages($data->get(['languages']));
-        $user->setInterests($data->get(['interests']));
+        $user->setLastName($data['lastName']);
+        $user->setEmail($data['email']);
+        $user->setPassword($data['password']);
+        $user->setAge($data['age']);
+        $user->setBio($data['bio']);
+        $user->setYearsLiving($data['yearsLiving']);
+        $user->setLanguages($data['languages']);
+        $user->setInterests($data['interests']);
 
-  //      $city = $cityRepository->find($data['city']);
-  //      $user->setCity($city);
+       $city = $cityRepository->find($data['cityId']);
+       $user->setCity($city);
 
         $entityManager->persist($user);
         $entityManager->flush($user);
 
         return $this->json(
             $user,
-            Response::HTTP_CREATED,
-            [
-                'Location' => $this->generateUrl(
-                    'api_user_get',
-                    [
-                        'id' => $user->getId()
-                    ]
-                )
-            ]
+            Response::HTTP_CREATED
+            // [
+            //     'Location' => $this->generateUrl(
+            //         'api_user_get',
+            //         [
+            //             'id' => $user->getId()
+            //         ]
+            //     )
+            // ]
         );
     }
 
