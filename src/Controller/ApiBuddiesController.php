@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\UserNormalizer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/api/buddies", name="api_buddies_")
@@ -94,7 +95,9 @@ class ApiBuddiesController extends AbstractController
     public function add(
         Request $request,
         EntityManagerInterface $entityManager,
-        CityRepository $cityRepository
+        CityRepository $cityRepository,
+        ValidatorInterface $validator,
+        UserNormalizer $userNormalizer
     ): Response {
 
         $data = json_decode($request->getContent(), true);
@@ -117,11 +120,30 @@ class ApiBuddiesController extends AbstractController
        $city = $cityRepository->find($data['cityId']);
        $user->setCity($city);
 
+       $errors = $validator->validate($user);
+        
+       if(count($errors) > 0) {
+           $dataErrors = [];
+
+           /** @var \Symfony\Component\Validator\ConstraintViolation $error */
+           foreach($errors as $error) {
+               $dataErrors[] = $error->getMessage();
+           }
+
+           return $this->json([
+               'status' => 'error',
+               'data' => [
+                   'errors' => $dataErrors
+                   ]
+               ],
+               Response::HTTP_BAD_REQUEST);
+       } 
+
         $entityManager->persist($user);
         $entityManager->flush($user);
 
         return $this->json(
-            $user,
+            $userNormalizer->userNormalizer($user),
             Response::HTTP_CREATED
             // [
             //     'Location' => $this->generateUrl(
@@ -144,18 +166,32 @@ class ApiBuddiesController extends AbstractController
      *      }
      * )
      */
-    public function update(int $id, Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+    public function update(
+        User $user,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        CityRepository $cityRepository
+        ): Response
+
     {
+        $data = json_decode($request->getContent(), true);
 
-       $result = $userRepository->findAll();
+        $user->setName($data['name']);
+        $user->setLastName($data['lastName']);
+        $user->setEmail($data['email']);
+        $user->setAge($data['age']);
+        $user->setBio($data['bio']);
+        $user->setLanguages($data['languages']);
+        $user->setInterests($data['interests']);
+        $user->setYearsLiving($data['yearsLiving']);
+        $user->setImage($data['image']);
 
-        $data = [];
+        $city = $cityRepository->find($data['cityId']);
+        $user->setCity($city);
 
-        foreach ($result as $user) {
-            $data[]= $userNormalizer->userNormalizer($user);
-        }
+        $entityManager->flush();
 
-        return $this->json($data);
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
         /**
@@ -168,18 +204,27 @@ class ApiBuddiesController extends AbstractController
      *      }
      * )
      */
-    public function remove(int $id, Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+    public function remove(
+        int $id,
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository
+    ): Response
     {
+        $user = $userRepository->find($id);
 
-       $result = $userRepository->findAll();
-
-        $data = [];
-
-        foreach ($result as $user) {
-            $data[]= $userNormalizer->userNormalizer($user);
+        if(!$user) {
+            return $this->json([
+                'message' => sprintf('No he encontrado el usuario con id.: %s', $id)
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        return $this->json($data);
+        dump($user);
+
+        // remove() prepara el sistema pero NO ejecuta la sentencia.
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
 }
