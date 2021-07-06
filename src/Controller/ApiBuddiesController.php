@@ -22,36 +22,20 @@ class ApiBuddiesController extends AbstractController
 {
     /**
      * @Route(
-     *      "", 
+     *      "/city/{id}", 
      *      name="cget",
      *      methods={"GET"})
      */
-    public function index(Request $request, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+    public function index($id, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
     {
-        // if($request->query->has('city')) {
-        //     $result= $userRepository->findBy([
-        //         'role' => 'ROLE_BUDDY',
-        //         'city' => $request->query->get('city')
-        //         ]);
+        $users = [];
 
-        //     $data = [];
+        foreach($userRepository->findUsersByCity($id) as $user) {
+            array_push($users, $userNormalizer->userNormalizer($user));
+        };
 
-        //     foreach ($result as $employee) {
-        //         $data[]= $employeeNormalize->employeeNormalize($employee);
-        //     }
-        //     return $this->json($data);
-        // }
+        return $this->json($users);
 
-
-       $result = $userRepository->findAll();
-
-        $data = [];
-
-        foreach ($result as $user) {
-            $data[]= $userNormalizer->userNormalizer($user);
-        }
-
-        return $this->json($data);
     }
 
     // public function index(CityRepository $cityRepository): Response
