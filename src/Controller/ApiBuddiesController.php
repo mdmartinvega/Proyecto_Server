@@ -38,6 +38,7 @@ class ApiBuddiesController extends AbstractController
 
     }
 
+
     // public function index(CityRepository $cityRepository): Response
     // {
     //     $result = $cityRepository->findAll();

@@ -21,7 +21,7 @@ class UserNormalizer {
      * @return array|null
      */
     public function userNormalizer (User $user): ?array {
-        $projects = [];
+        // $projects = [];
 
         // foreach($employee->getProjects() as $project) {
         //     array_push($projects, [
