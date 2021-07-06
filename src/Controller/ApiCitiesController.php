@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Repository\CityRepository;
+use App\Service\CityNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 /**
  * @Route("/api/cities", name="api_cities_")
@@ -20,7 +22,7 @@ class ApiCitiesController extends AbstractController
      *      methods={"GET"})
      */
 
-    public function index(CityRepository $cityRepository): Response
+    public function index(CityNormalizer $cityNormalizer, CityRepository $cityRepository): Response
     {
 
        $result = $cityRepository->findAll();
@@ -28,9 +30,9 @@ class ApiCitiesController extends AbstractController
         $data = [];
 
         foreach ($result as $city) {
-            $data[]= $city;
+            $data[]= $cityNormalizer->cityNormalizer($city);
         }
 
-        return $this->json($result);
+        return $this->json($data);
     }
 }
