@@ -117,6 +117,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getUserName() {
+        return $this->getUserIdentifier();
+    }
+
     /**
      * A visual identifier that represents this user.
      *
@@ -127,13 +131,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    public function getUsername(): string
-    {
-        return (string) $this->email;
-    }
+    // /**
+    //  * @deprecated since Symfony 5.3, use getUserIdentifier instead
+    //  */
+    // public function pruebaGetUsername(): string
+    // {
+    //     return (string) $this->email;
+    // }
 
     /**
      * @see UserInterface
@@ -142,7 +146,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // TODO: ¿Estos es así?
+        $roles[] = ['ROLE_USER', 'ROLE_BUDDY'];
 
         return array_unique($roles);
     }
