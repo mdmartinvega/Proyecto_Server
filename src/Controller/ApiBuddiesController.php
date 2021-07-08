@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\CityRepository;
 use App\Repository\UserRepository;
+use App\Service\CityNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,15 +27,26 @@ class ApiBuddiesController extends AbstractController
      *      name="cget",
      *      methods={"GET"})
      */
-    public function index($id, UserRepository $userRepository, UserNormalizer $userNormalizer): Response
+    public function index($id, 
+    UserRepository $userRepository, 
+    UserNormalizer $userNormalizer, 
+    CityRepository $cityRepository,
+    CityNormalizer $cityNormalizer): Response
     {
         $users = [];
-
         foreach($userRepository->findUsersByCity($id) as $user) {
             array_push($users, $userNormalizer->userNormalizer($user));
         };
 
-        return $this->json($users);
+        $city = $cityNormalizer->cityNormalizer($cityRepository->find($id));
+
+        $resultado = [
+        "total" =>  count($userRepository->findUsersByCity($id)),
+        "city" => $city,
+        "results" => $users
+        ];
+
+        return $this->json($resultado);
 
     }
 
@@ -101,6 +113,10 @@ class ApiBuddiesController extends AbstractController
         $user->setYearsLiving($data['yearsLiving']);
         $user->setLanguages($data['languages']);
         $user->setInterests($data['interests']);
+
+//        if(Si el data indica que es un anfitrion) {
+//        $user->setRoles(['ROLE_BUDY']);
+        // }
 
        $city = $cityRepository->find($data['cityId']);
        $user->setCity($city);
