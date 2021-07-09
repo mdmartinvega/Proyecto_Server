@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\CityRepository;
+use App\Repository\InterestRepository;
+use App\Repository\LanguageRepository;
 use App\Repository\UserRepository;
 use App\Service\CityNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\UserNormalizer;
-use Doctrine\ORM\EntityManager;
+use App\Service\InterestNormalizer;
+use App\Service\LanguageNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -51,18 +54,46 @@ class ApiBuddiesController extends AbstractController
     }
 
 
-    // public function index(CityRepository $cityRepository): Response
-    // {
-    //     $result = $cityRepository->findAll();
-    //     $data = $result;
+    /**
+     * @Route(
+     *      "/interestsList", 
+     *      name="interests",
+     *      methods={"GET"})
+     */
+    public function interestsList( 
+    InterestRepository $interestRepository, 
+    InterestNormalizer $interestNormalizer): Response
+    {
+        $interests = [];
 
-    //     $resultado = [
-    //         "total" => 15,
-    //         "results" => $data
-    //     ];
+        foreach($interestRepository->findAll() as $interest) {
+            array_push($interests, $interestNormalizer->interestNormalizer($interest));
+        };
 
-    //     return $this->json($resultado);
-    // }
+        return $this->json($interests);
+
+    }
+
+        /**
+     * @Route(
+     *      "/languagesList", 
+     *      name="languages",
+     *      methods={"GET"})
+     */
+    public function languagesList( 
+        LanguageRepository $languageRepository, 
+        LanguageNormalizer $languageNormalizer): Response
+        {
+            $languages = [];
+    
+            foreach($languageRepository->findAll() as $language) {
+                array_push($languages, $languageNormalizer->languageNormalizer($language));
+            };
+    
+            return $this->json($languages);
+    
+        }
+
 
     /**
      * @Route(
@@ -108,9 +139,9 @@ class ApiBuddiesController extends AbstractController
         $user->setLastName($data['lastName']);
         $user->setEmail($data['email']);
         $user->setPassword($data['password']);
-        $user->setAge($data['age']);
-        $user->setBio($data['bio']);
-        $user->setYearsLiving($data['yearsLiving']);
+        // $user->setAge($data['age']);
+        // $user->setBio($data['bio']);
+        // $user->setYearsLiving($data['yearsLiving']);
         $user->setLanguages($data['languages']);
         $user->setInterests($data['interests']);
 
@@ -118,8 +149,8 @@ class ApiBuddiesController extends AbstractController
 //        $user->setRoles(['ROLE_BUDY']);
         // }
 
-       $city = $cityRepository->find($data['cityId']);
-       $user->setCity($city);
+    //    $city = $cityRepository->find($data['cityId']);
+    //    $user->setCity($city);
 
        $errors = $validator->validate($user);
         

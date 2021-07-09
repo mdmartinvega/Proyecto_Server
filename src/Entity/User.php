@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -85,19 +87,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $city;
 
     /**
-     * @ORM\Column(type="simple_array")
-     */
-    private $languages = [];
-
-    /**
-     * @ORM\Column(type="simple_array")
-     */
-    private $interests = [];
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $avatar;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=interest::class)
+     */
+    private $interests;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Language::class)
+     */
+    private $language;
+
+    public function __construct()
+    {
+        $this->interests = new ArrayCollection();
+        $this->language = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -277,30 +285,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLanguages(): ?array
-    {
-        return $this->languages;
-    }
-
-    public function setLanguages(array $languages): self
-    {
-        $this->languages = $languages;
-
-        return $this;
-    }
-
-    public function getInterests(): ?array
-    {
-        return $this->interests;
-    }
-
-    public function setInterests(array $interests): self
-    {
-        $this->interests = $interests;
-
-        return $this;
-    }
-
     public function getAvatar(): ?string
     {
         return $this->avatar;
@@ -309,6 +293,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|interest[]
+     */
+    public function getInterests(): Collection
+    {
+        return $this->interests;
+    }
+
+    public function addInterest(interest $interest): self
+    {
+        if (!$this->interests->contains($interest)) {
+            $this->interests[] = $interest;
+        }
+
+        return $this;
+    }
+
+    public function removeInterest(interest $interest): self
+    {
+        $this->interests->removeElement($interest);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Language[]
+     */
+    public function getLanguage(): Collection
+    {
+        return $this->language;
+    }
+
+    public function addLanguage(Language $language): self
+    {
+        if (!$this->language->contains($language)) {
+            $this->language[] = $language;
+        }
+
+        return $this;
+    }
+
+    public function removeLanguage(Language $language): self
+    {
+        $this->language->removeElement($language);
 
         return $this;
     }
