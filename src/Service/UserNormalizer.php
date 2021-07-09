@@ -36,6 +36,16 @@ class UserNormalizer {
         // if($employee->getAvatar()) {
         //     $avatar = $this->urlHelper->getAbsoluteUrl('/employee/avatar/'.$employee->getAvatar());
         // }
+
+        $interests = [];
+        foreach($user->getInterests() as $interest) {
+            array_push($interests, ["id" => $interest->getId(), "tag" => $interest->getTag()]);
+        }
+        
+        $languages = [];
+        foreach($user->getLanguage() as $language) {
+            array_push($languages, ["id" => $language->getId(), "name" => $language->getName()]);
+        }
         
         return [
             'id' => $user->getId(),
@@ -44,8 +54,8 @@ class UserNormalizer {
             'email' => $user->getEmail(),
             'age' => $user->getAge(),
             'bio' => $user->getBio(),
-            'languages' => $user->getLanguages(),
-            'interests' => $user->getInterests(),
+            'languages' => $languages,
+            'interests' => $interests,
             'yearsLiving' => $user->getYearsLiving(),
             'image' => $user->getImage(),
             'cityId' => $user->getCity()->getName()

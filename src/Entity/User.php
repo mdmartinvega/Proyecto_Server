@@ -92,7 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $avatar;
 
     /**
-     * @ORM\ManyToMany(targetEntity=interest::class)
+     * @ORM\ManyToMany(targetEntity=Interest::class)
      */
     private $interests;
 
@@ -297,15 +297,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    //TODO: Mirar esta parte siempre que dé error interets - distintos en plurar/singular
     /**
-     * @return Collection|interest[]
+     * @return Collection|Interest[]
      */
     public function getInterests(): Collection
     {
         return $this->interests;
     }
 
-    public function addInterest(interest $interest): self
+    public function addInterest(Interest $interest): self
     {
         if (!$this->interests->contains($interest)) {
             $this->interests[] = $interest;
@@ -314,7 +316,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeInterest(interest $interest): self
+    public function removeInterest(Interest $interest): self
     {
         $this->interests->removeElement($interest);
 

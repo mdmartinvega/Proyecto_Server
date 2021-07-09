@@ -57,7 +57,7 @@ class ApiBuddiesController extends AbstractController
     /**
      * @Route(
      *      "/interestsList", 
-     *      name="interests",
+     *      name="interestslist",
      *      methods={"GET"})
      */
     public function interestsList( 
@@ -74,7 +74,7 @@ class ApiBuddiesController extends AbstractController
 
     }
 
-        /**
+    /**
      * @Route(
      *      "/languagesList", 
      *      name="languages",
@@ -142,8 +142,8 @@ class ApiBuddiesController extends AbstractController
         // $user->setAge($data['age']);
         // $user->setBio($data['bio']);
         // $user->setYearsLiving($data['yearsLiving']);
-        $user->setLanguages($data['languages']);
-        $user->setInterests($data['interests']);
+        // $user->setLanguages($data['languages']);
+        // $user->setInterests($data['interests']);
 
 //        if(Si el data indica que es un anfitrion) {
 //        $user->setRoles(['ROLE_BUDY']);
@@ -213,8 +213,8 @@ class ApiBuddiesController extends AbstractController
         $user->setEmail($data['email']);
         $user->setAge($data['age']);
         $user->setBio($data['bio']);
-        $user->setLanguages($data['languages']);
-        $user->setInterests($data['interests']);
+        // $user->setLanguages($data['languages']);
+        // $user->setInterests($data['interests']);
         $user->setYearsLiving($data['yearsLiving']);
         $user->setImage($data['image']);
 
