@@ -125,7 +125,9 @@ class ApiBuddiesController extends AbstractController
         EntityManagerInterface $entityManager,
         CityRepository $cityRepository,
         ValidatorInterface $validator,
-        UserNormalizer $userNormalizer
+        UserNormalizer $userNormalizer,
+        InterestRepository $interestRepository,
+        LanguageRepository $languageRepository
     ): Response {
 
         $data = json_decode($request->getContent(), true);
@@ -142,15 +144,22 @@ class ApiBuddiesController extends AbstractController
         // $user->setAge($data['age']);
         // $user->setBio($data['bio']);
         // $user->setYearsLiving($data['yearsLiving']);
-        // $user->setLanguages($data['languages']);
-        // $user->setInterests($data['interests']);
 
-//        if(Si el data indica que es un anfitrion) {
+        foreach ($data['interests'] as $interestId) {
+            $interest = $interestRepository->find($interestId);
+            $user->addInterest($interest);
+        }
+        foreach ($data['languages'] as $languageId) {
+            $language = $languageRepository->find($languageId);
+            $user->addLanguage($language);
+        }
+
+       $city = $cityRepository->find($data['cityId']);
+       $user->setCity($city);
+
+       //        if(Si el data indica que es un anfitrion) {
 //        $user->setRoles(['ROLE_BUDY']);
         // }
-
-    //    $city = $cityRepository->find($data['cityId']);
-    //    $user->setCity($city);
 
        $errors = $validator->validate($user);
         
