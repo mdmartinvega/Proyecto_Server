@@ -16,12 +16,15 @@ use App\Service\UserNormalizer;
 use App\Service\InterestNormalizer;
 use App\Service\LanguageNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 /**
  * @Route("/api/buddies", name="api_buddies_")
  */
 
+// TODO:Crear un endpoint con todos
 class ApiBuddiesController extends AbstractController
 {
     /**
@@ -115,8 +118,8 @@ class ApiBuddiesController extends AbstractController
 
     /**
      * @Route(
-     *      "", 
-     *      name="post",
+     *      "/addBuddy", 
+     *      name="addBuddy",
      *      methods={"POST"},
      * )
      */
@@ -141,9 +144,9 @@ class ApiBuddiesController extends AbstractController
         $user->setLastName($data['lastName']);
         $user->setEmail($data['email']);
         $user->setPassword($data['password']);
-        // $user->setAge($data['age']);
-        // $user->setBio($data['bio']);
-        // $user->setYearsLiving($data['yearsLiving']);
+        $user->setAge($data['age']);
+        $user->setBio($data['bio']);
+        $user->setYearsLiving($data['yearsLiving']);
 
         foreach ($data['interests'] as $interestId) {
             $interest = $interestRepository->find($interestId);
@@ -157,9 +160,9 @@ class ApiBuddiesController extends AbstractController
        $city = $cityRepository->find($data['cityId']);
        $user->setCity($city);
 
-       //        if(Si el data indica que es un anfitrion) {
-//        $user->setRoles(['ROLE_BUDY']);
-        // }
+        if($user->getRoles(['ROLE_BUDDY'])) {
+            $user->setRoles(['ROLE_BUDDY']);
+        }
 
        $errors = $validator->validate($user);
         
@@ -186,16 +189,84 @@ class ApiBuddiesController extends AbstractController
         return $this->json(
             $userNormalizer->userNormalizer($user),
             Response::HTTP_CREATED
-            // [
-            //     'Location' => $this->generateUrl(
-            //         'api_user_get',
-            //         [
-            //             'id' => $user->getId()
-            //         ]
-            //     )
-            // ]
         );
     }
+
+    /**
+     * @Route(
+     *      "/addUser", 
+     *      name="addUser",
+     *      methods={"POST"},
+     * )
+     */
+    public function addUser(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        CityRepository $cityRepository,
+        ValidatorInterface $validator,
+        UserNormalizer $userNormalizer,
+        InterestRepository $interestRepository,
+        LanguageRepository $languageRepository
+    ): Response {
+
+        $data = json_decode($request->getContent(), true);
+        // dump($data);
+        // dump($data['name']);
+        // die();
+
+        $user = new User();
+
+        $user->setName($data['name']);
+        $user->setLastName($data['lastName']);
+        $user->setEmail($data['email']);
+        $user->setPassword($data['password']);
+        $user->setAge($data['age']);
+        $user->setBio($data['bio']);
+
+        foreach ($data['interests'] as $interestId) {
+            $interest = $interestRepository->find($interestId);
+            $user->addInterest($interest);
+        }
+        foreach ($data['languages'] as $languageId) {
+            $language = $languageRepository->find($languageId);
+            $user->addLanguage($language);
+        }
+
+       $city = $cityRepository->find($data['cityId']);
+       $user->setCity($city);
+
+        if($user->getRoles(['ROLE_USER'])) {
+            $user->setRoles(['ROLE_USER']);
+        }
+
+       $errors = $validator->validate($user);
+        
+       if(count($errors) > 0) {
+           $dataErrors = [];
+
+           /** @var \Symfony\Component\Validator\ConstraintViolation $error */
+           foreach($errors as $error) {
+               $dataErrors[] = $error->getMessage();
+           }
+
+           return $this->json([
+               'status' => 'error',
+               'data' => [
+                   'errors' => $dataErrors
+                   ]
+               ],
+               Response::HTTP_BAD_REQUEST);
+       } 
+
+        $entityManager->persist($user);
+        $entityManager->flush($user);
+
+        return $this->json(
+            $userNormalizer->userNormalizer($user),
+            Response::HTTP_CREATED
+        );
+    }
+
 
     /**
      * @Route(
