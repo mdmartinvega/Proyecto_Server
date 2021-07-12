@@ -57,7 +57,8 @@ class UserNormalizer {
             'languages' => $languages,
             'interests' => $interests,
             'yearsLiving' => $user->getYearsLiving(),
-            'cityId' => $user->getCity()->getName()
+            'cityId' => $user->getCity()->getName(),
+            'roles' => $user->getRoles()
         ];
     }
 }
