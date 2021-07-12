@@ -17,6 +17,7 @@ use App\Service\InterestNormalizer;
 use App\Service\LanguageNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -264,6 +265,51 @@ class ApiBuddiesController extends AbstractController
         return $this->json(
             $userNormalizer->userNormalizer($user),
             Response::HTTP_CREATED
+        );
+    }
+
+    /**
+    * @Route(
+    *      "/imageupdated/{id}",
+    *      name="imageUpdated",
+    *      methods={"POST"},
+    *      requirements={
+    *          "id": "\d+"
+    *      }
+    * )
+    */
+    public function updatedImage(
+        User $user, 
+        Request $request, 
+        EntityManagerInterface $entityManager):Response {
+        // dump($request->request);
+        // dump($request->files);
+        // dump($user);
+        // die();
+
+        if($request->files->has('File')) {
+            $imageFile = $request->files->get('File');
+
+            $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+            // Intentamos mover el fichero a la carpeta public
+            try {
+                $imageFile->move(
+                    $request->server->get('DOCUMENT_ROOT') . DIRECTORY_SEPARATOR . 'images', // El primer parámetro es la ruta
+                    $newFilename // El 2º param es el nombre del fichero
+                );
+            } catch (FileException $error) {
+                throw new \Exception($error->getMessage());
+            }
+
+            $user->setImage($newFilename);
+        }
+
+        $entityManager->flush();
+
+        return $this->json(
+            null,
+            Response::HTTP_NO_CONTENT
         );
     }
 

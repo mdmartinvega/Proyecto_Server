@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @Route("/api/messages", name="api_messages_")
  */
 
-class ApiCitiesController extends AbstractController
+class ApiMessagesController extends AbstractController
 {
      /**
      * @Route(
