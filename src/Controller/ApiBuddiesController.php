@@ -112,9 +112,9 @@ class ApiBuddiesController extends AbstractController
 
     public function indexOneUser(
         User $user,
-        UserNormalizer $employeeNormalize): Response
+        UserNormalizer $userNormalizer): Response
     {
-        return $this->json($employeeNormalize->userNormalizer($user));
+        return $this->json($userNormalizer->userNormalizer($user));
     }
 
     /**
