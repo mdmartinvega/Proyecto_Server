@@ -101,10 +101,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $language;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender")
+     */
+    private $sendMessages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="receiver", orphanRemoval=true)
+     */
+    private $receivedMessages;
+
     public function __construct()
     {
         $this->interests = new ArrayCollection();
         $this->language = new ArrayCollection();
+        $this->sendMessages = new ArrayCollection();
+        $this->receivedMessages = new ArrayCollection();
     }
 
 
@@ -343,6 +355,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeLanguage(Language $language): self
     {
         $this->language->removeElement($language);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getSendMessages(): Collection
+    {
+        return $this->sendMessages;
+    }
+
+    public function addSendMessage(Message $sendMessage): self
+    {
+        if (!$this->sendMessages->contains($sendMessage)) {
+            $this->sendMessages[] = $sendMessage;
+            $sendMessage->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSendMessage(Message $sendMessage): self
+    {
+        if ($this->sendMessages->removeElement($sendMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($sendMessage->getSender() === $this) {
+                $sendMessage->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getReceivedMessages(): Collection
+    {
+        return $this->receivedMessages;
+    }
+
+    public function addReceivedMessage(Message $receivedMessage): self
+    {
+        if (!$this->receivedMessages->contains($receivedMessage)) {
+            $this->receivedMessages[] = $receivedMessage;
+            $receivedMessage->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedMessage(Message $receivedMessage): self
+    {
+        if ($this->receivedMessages->removeElement($receivedMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedMessage->getReceiver() === $this) {
+                $receivedMessage->setReceiver(null);
+            }
+        }
 
         return $this;
     }
