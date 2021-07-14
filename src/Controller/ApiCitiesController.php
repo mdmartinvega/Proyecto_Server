@@ -24,7 +24,6 @@ class ApiCitiesController extends AbstractController
 
     public function index(CityNormalizer $cityNormalizer, CityRepository $cityRepository): Response
     {
-    //    $user = $this->getUser();
        $result = $cityRepository->findAll();
 
         $data = [];

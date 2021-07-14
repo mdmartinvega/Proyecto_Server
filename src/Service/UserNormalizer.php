@@ -54,6 +54,7 @@ class UserNormalizer {
             'email' => $user->getEmail(),
             'age' => $user->getAge(),
             'bio' => $user->getBio(),
+            'image' => $user->getImage(),
             'languages' => $languages,
             'interests' => $interests,
             'yearsLiving' => $user->getYearsLiving(),

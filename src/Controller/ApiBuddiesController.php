@@ -51,6 +51,7 @@ class ApiBuddiesController extends AbstractController
         "total" =>  count($userRepository->findUsersByCity($id)),
         "city" => $city,
         "results" => $users
+        // "results" => $userRepository->findUsersByRole($roles)
         ];
 
         return $this->json($resultado);
