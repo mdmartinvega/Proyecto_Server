@@ -26,6 +26,7 @@ class ApiMessagesController extends AbstractController
      *      methods={"GET"},
      *      requirements={
      *          "id": "\d+"
+     *      }
      * )
      */
 
@@ -46,13 +47,14 @@ class ApiMessagesController extends AbstractController
     /**
      * @Route(
      *      "/{id}", 
-     *      name="addBuddy",
+     *      name="sendMessage",
      *      methods={"POST"},
      *      requirements={
      *          "id": "\d+"
+     *      }
      * )
      */
-    public function add(
+    public function addMessage(
         Request $request,
         EntityManagerInterface $entityManager,
         MessageRepository $messageRepository,
@@ -85,6 +87,8 @@ class ApiMessagesController extends AbstractController
         $message->setReceiver($receiver);
         
         $message->setCreatedAt(new \DateTimeImmutable());
+
+        
 
 
        $errors = $validator->validate($message);

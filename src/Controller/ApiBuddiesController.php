@@ -18,6 +18,7 @@ use App\Service\LanguageNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -208,7 +209,8 @@ class ApiBuddiesController extends AbstractController
         ValidatorInterface $validator,
         UserNormalizer $userNormalizer,
         InterestRepository $interestRepository,
-        LanguageRepository $languageRepository
+        LanguageRepository $languageRepository,
+        UserPasswordHasherInterface $hasher,
     ): Response {
 
         $data = json_decode($request->getContent(), true);
@@ -218,10 +220,13 @@ class ApiBuddiesController extends AbstractController
 
         $user = new User();
 
+        $unhashedPassword = $data['password'];
+        $hashedPassword = $hasher->hashPassword($user, $unhashedPassword);
+
         $user->setName($data['name']);
         $user->setLastName($data['lastName']);
         $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
+        $user->setPassword($hashedPassword);
         $user->setAge($data['age']);
         $user->setBio($data['bio']);
 
