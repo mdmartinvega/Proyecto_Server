@@ -133,7 +133,8 @@ class ApiBuddiesController extends AbstractController
         ValidatorInterface $validator,
         UserNormalizer $userNormalizer,
         InterestRepository $interestRepository,
-        LanguageRepository $languageRepository
+        LanguageRepository $languageRepository,
+        UserPasswordHasherInterface $hasher,
     ): Response {
 
         $data = json_decode($request->getContent(), true);
@@ -143,10 +144,13 @@ class ApiBuddiesController extends AbstractController
 
         $user = new User();
 
+        $unhashedPassword = $data['password'];
+        $hashedPassword = $hasher->hashPassword($user, $unhashedPassword);
+
         $user->setName($data['name']);
         $user->setLastName($data['lastName']);
         $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
+        $user->setPassword($hashedPassword);
         $user->setAge($data['age']);
         $user->setBio($data['bio']);
         $user->setYearsLiving($data['yearsLiving']);
@@ -229,6 +233,7 @@ class ApiBuddiesController extends AbstractController
         $user->setPassword($hashedPassword);
         $user->setAge($data['age']);
         $user->setBio($data['bio']);
+        
 
         foreach ($data['interests'] as $interestId) {
             $interest = $interestRepository->find($interestId);
@@ -273,6 +278,8 @@ class ApiBuddiesController extends AbstractController
             Response::HTTP_CREATED
         );
     }
+
+    
 
     /**
     * @Route(

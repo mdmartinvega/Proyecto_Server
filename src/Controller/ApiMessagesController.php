@@ -22,7 +22,7 @@ class ApiMessagesController extends AbstractController
      /**
      * @Route(
      *      "/{id}", 
-     *      name="cget",
+     *      name="getMessage",
      *      methods={"GET"},
      *      requirements={
      *          "id": "\d+"
@@ -30,19 +30,12 @@ class ApiMessagesController extends AbstractController
      * )
      */
 
-    // public function index(MessageNormalizer $messageNormalizer, MessageRepository $messageRepository): Response
-    // {
-    // //    $user = $this->getUser();
-    //    $result = $messageRepository->findAll();
-
-    //     $data = [];
-
-    //     foreach ($result as $message) {
-    //         $data[]= $messageNormalizer->messageNormalizer($message);
-    //     }
-
-    //     return $this->json($data);
-    // }
+    public function receiveMessage(
+        Message $message,
+        MessageNormalizer $messageNormalizer): Response
+    {
+        return $this->json($messageNormalizer->messageNormalizer($message));
+    }
 
     /**
      * @Route(
@@ -78,6 +71,7 @@ class ApiMessagesController extends AbstractController
 
         $message = new Message();
 
+        
         $message->setMessage($data['message']);
 
         $sender = $userRepository->findOneBy(['email' => $data['sender']]);
