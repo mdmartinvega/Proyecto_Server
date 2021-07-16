@@ -30,11 +30,23 @@ class ApiMessagesController extends AbstractController
      * )
      */
 
-    public function receiveMessage(
-        Message $message,
+     public function getMessageByReceiver(int $id, 
+        MessageRepository $messageRepository, 
         MessageNormalizer $messageNormalizer): Response
     {
-        return $this->json($messageNormalizer->messageNormalizer($message));
+        $result = $messageRepository->findMessagesByReceiver($id);
+
+        $data = [];
+        
+
+        foreach ($result as $message) {
+            array_push($data, $messageNormalizer->messageNormalizer($message));
+        }
+        // dump($data);
+        // // dump($data['message']);
+        // die();
+
+        return $this->json($data);
     }
 
     /**

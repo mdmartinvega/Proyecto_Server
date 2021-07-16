@@ -98,29 +98,29 @@ class ApiBuddiesController extends AbstractController
         );
     }
 
-    /**
-     * @Route(
-     *      "/dashboard/{id}", 
-     *      name="cget",
-     *      methods={"GET"},
-     *      requirements={
-     *          "id": "\d+"
-     *      })
-     */
-    public function getUserByEmail($id, 
-    UserRepository $userRepository, 
-    UserNormalizer $userNormalizer): Response
-    {
-        $result = $userRepository->findBy(['email' => $id]);
+    // /**
+    //  * @Route(
+    //  *      "/dashboard/{id}", 
+    //  *      name="cget",
+    //  *      methods={"GET"},
+    //  *      requirements={
+    //  *          "id": "\d+"
+    //  *      })
+    //  */
+    // public function getUserByEmail($id, 
+    // UserRepository $userRepository, 
+    // UserNormalizer $userNormalizer): Response
+    // {
+    //     $result = $userRepository->findBy(['email' => $id]);
 
-        $data = [];
+    //     $data = [];
 
-        foreach ($result as $user) {
-            $data[]= $userNormalizer->userNormalizer($user);
-        }
+    //     foreach ($result as $user) {
+    //         $data[]= $userNormalizer->userNormalizer($user);
+    //     }
 
-        return $this->json($data);
-    }
+    //     return $this->json($data);
+    // }
 
 
     /**

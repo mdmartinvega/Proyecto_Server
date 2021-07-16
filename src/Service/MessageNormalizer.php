@@ -25,8 +25,10 @@ class MessageNormalizer {
         return [
             'id' => $message->getId(),
             'message' => $message->getMessage(),
-            'sender' => $message->getSender(),
-            'receiver' => $message->getReceiver(),
+            'senderId' => $message->getSender()->getId(),
+            'senderName' => $message->getSender()->getName(),
+            'receiverId' => $message->getReceiver()->getId(),
+            'receiverName' => $message->getReceiver()->getName(),
             'createdAt' => $message->getCreatedAt()
         ];
     }
