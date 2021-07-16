@@ -42,11 +42,12 @@ class ApiMessagesController extends AbstractController
         foreach ($result as $message) {
             array_push($data, $messageNormalizer->messageNormalizer($message));
         }
-        // dump($data);
-        // // dump($data['message']);
-        // die();
 
-        return $this->json($data);
+        $resultado = [
+            "total" => count($data),
+            "messages" => $data];
+
+        return $this->json($resultado);
     }
 
     /**
