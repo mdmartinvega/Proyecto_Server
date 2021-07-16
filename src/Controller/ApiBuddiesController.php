@@ -26,16 +26,40 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @Route("/api/buddies", name="api_buddies_")
  */
 
-// TODO:Crear un endpoint con todos
 class ApiBuddiesController extends AbstractController
 {
+
+    /**
+     * @Route(
+     *      "", 
+     *      name="getAllBuddies",
+     *      methods={"GET"}
+     * )
+     */
+
+    public function allBuddies(
+        User $user,
+        UserNormalizer $userNormalizer,
+        UserRepository $userRepository): Response
+    {
+        $result = $userRepository->findAll();
+
+        $data = [];
+
+        foreach ($result as $user) {
+            $data[]= $userNormalizer->userNormalizer($user);
+        }
+
+        return $this->json($data);
+    }
+
     /**
      * @Route(
      *      "/city/{id}", 
      *      name="cget",
      *      methods={"GET"})
      */
-    public function index($id, 
+    public function getUsersByCity($id, 
     UserRepository $userRepository, 
     UserNormalizer $userNormalizer, 
     CityRepository $cityRepository,
@@ -57,6 +81,45 @@ class ApiBuddiesController extends AbstractController
 
         return $this->json($resultado);
 
+    }
+
+    /**
+     * @Route(
+     *      "/me",
+     *      name="current_user_info",
+     *      methods={"GET"},
+     *  )
+     *  @IsGranted("ROLE_USER")
+     */
+    public function me(UserNormalizer $userNormalizer): Response
+    {
+        return $this->json(
+            $userNormalizer->userNormalizer($this->getUser())
+        );
+    }
+
+    /**
+     * @Route(
+     *      "/dashboard/{id}", 
+     *      name="cget",
+     *      methods={"GET"},
+     *      requirements={
+     *          "id": "\d+"
+     *      })
+     */
+    public function getUserByEmail($id, 
+    UserRepository $userRepository, 
+    UserNormalizer $userNormalizer): Response
+    {
+        $result = $userRepository->findBy(['email' => $id]);
+
+        $data = [];
+
+        foreach ($result as $user) {
+            $data[]= $userNormalizer->userNormalizer($user);
+        }
+
+        return $this->json($data);
     }
 
 
