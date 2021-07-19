@@ -258,7 +258,7 @@ class ApiBuddiesController extends AbstractController
 
         return $this->json(
             $userNormalizer->userNormalizer($user),
-            Response::HTTP_CREATED
+            Response::HTTP_OK
         );
     }
 
@@ -338,7 +338,7 @@ class ApiBuddiesController extends AbstractController
 
         return $this->json(
             $userNormalizer->userNormalizer($user),
-            Response::HTTP_CREATED
+            Response::HTTP_OK
         );
     }
 
@@ -392,7 +392,7 @@ class ApiBuddiesController extends AbstractController
 
     /**
      * @Route(
-     *      "/{id}", 
+     *      "/updatedUser/{id}", 
      *      name="update",
      *      methods={"PUT"},
      *      requirements={
@@ -404,33 +404,32 @@ class ApiBuddiesController extends AbstractController
         User $user,
         EntityManagerInterface $entityManager,
         Request $request,
-        CityRepository $cityRepository
+        UserPasswordHasherInterface $hasher
         ): Response
 
     {
         $data = json_decode($request->getContent(), true);
+
+        $unhashedPassword = $data['password'];
+        $hashedPassword = $hasher->hashPassword($user, $unhashedPassword);
 
         $user->setName($data['name']);
         $user->setLastName($data['lastName']);
         $user->setEmail($data['email']);
         $user->setAge($data['age']);
         $user->setBio($data['bio']);
-        // $user->setLanguages($data['languages']);
-        // $user->setInterests($data['interests']);
-        $user->setYearsLiving($data['yearsLiving']);
-        $user->setImage($data['image']);
+        $user->setPassword($hashedPassword);
 
-        $city = $cityRepository->find($data['cityId']);
-        $user->setCity($city);
+
 
         $entityManager->flush();
 
-        return $this->json(null, Response::HTTP_NO_CONTENT);
+        return $this->json(null, Response::HTTP_OK);
     }
 
         /**
      * @Route(
-     *      "/{id}", 
+     *      "/delete/{id}", 
      *      name="delete",
      *      methods={"DELETE"},
      *      requirements={
@@ -458,7 +457,7 @@ class ApiBuddiesController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->json(null, Response::HTTP_NO_CONTENT);
+        return $this->json(null, Response::HTTP_OK);
     }
 
 }

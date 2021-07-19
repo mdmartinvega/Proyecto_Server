@@ -24,7 +24,7 @@ class Message
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sendMessages")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="sender_id", referencedColumnName="id")
      */
     private $sender;
 

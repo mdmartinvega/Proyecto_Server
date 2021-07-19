@@ -102,7 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $language;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender", orphanRemoval=true)
      */
     private $sendMessages;
 

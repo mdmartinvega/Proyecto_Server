@@ -21,7 +21,7 @@ class ApiMessagesController extends AbstractController
 {
      /**
      * @Route(
-     *      "/{id}", 
+     *      "/receivedMessages/{id}", 
      *      name="getMessage",
      *      methods={"GET"},
      *      requirements={
@@ -52,6 +52,37 @@ class ApiMessagesController extends AbstractController
 
     /**
      * @Route(
+     *      "/sentMessages/{id}", 
+     *      name="sentMessage",
+     *      methods={"GET"},
+     *      requirements={
+     *          "id": "\d+"
+     *      }
+     * )
+     */
+
+//     public function getMessageBySender(int $id, 
+//     MessageRepository $messageRepository, 
+//     MessageNormalizer $messageNormalizer): Response
+// {
+//     $result = $messageRepository->findMessagesBySender($id);
+
+//     $data = [];
+    
+
+//     foreach ($result as $message) {
+//         array_push($data, $messageNormalizer->messageNormalizer($message));
+//     }
+
+//     $resultado = [
+//         "total" => count($data),
+//         "messages" => $data];
+
+//     return $this->json($resultado);
+// }
+
+    /**
+     * @Route(
      *      "/{id}", 
      *      name="sendMessage",
      *      methods={"POST"},
@@ -68,19 +99,8 @@ class ApiMessagesController extends AbstractController
         MessageNormalizer $messageNormalizer,
         UserRepository $userRepository
     ): Response {
-        // Necesitas un usuario autenticado, remitente (sender), que será el asociado al token JWT que debes enviar a este endpoint.
-        // Recuperas el usuario del token con el método $this->getUser();
-        // $message->setSender($this->getUser());
-
-        // Para el receptor, necesitamos el id del usuario (receiver_id) que debe recibir el mensaje.
-        // Instanciamos el usuario receptor:
-        // $receiver = $userRepository->find($data['receiver_id']);
-        // $message->setReceiver($receiver);
 
         $data = json_decode($request->getContent(), true);
-        // dump($data);
-        // dump($data['name']);
-        // die();
 
         $message = new Message();
 

@@ -20,7 +20,7 @@ class MessageRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Message[]|null Returns an array of message objects
+     * @return Message[]|null Returns an array of receive message objects
      */
     public function findMessagesByReceiver($id)
     {
@@ -32,6 +32,20 @@ class MessageRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    // /**
+    //  * @return Message[]|null Returns an array of sent message objects
+    //  */
+    // public function findMessagesBySender($id)
+    // {
+    //     return $this->createQueryBuilder('s')
+    //         ->andWhere('s.sender = :id')
+    //         ->setParameter('id', $id)
+    //         ->orderBy('m.createdAt', 'DESC')
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
 
     // /**
     //  * @return Message[] Returns an array of Message objects
