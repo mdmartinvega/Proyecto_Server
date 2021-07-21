@@ -197,7 +197,7 @@ class ApiBuddiesController extends AbstractController
         UserNormalizer $userNormalizer,
         InterestRepository $interestRepository,
         LanguageRepository $languageRepository,
-        UserPasswordHasherInterface $hasher,
+        UserPasswordHasherInterface $hasher
     ): Response {
 
         $data = json_decode($request->getContent(), true);
@@ -277,7 +277,7 @@ class ApiBuddiesController extends AbstractController
         UserNormalizer $userNormalizer,
         InterestRepository $interestRepository,
         LanguageRepository $languageRepository,
-        UserPasswordHasherInterface $hasher,
+        UserPasswordHasherInterface $hasher
     ): Response {
 
         $data = json_decode($request->getContent(), true);

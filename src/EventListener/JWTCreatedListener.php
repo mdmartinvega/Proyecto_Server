@@ -10,7 +10,7 @@ class JWTCreatedListener
     private $tokenStorage;
 
     public function __construct(
-        UsageTrackingTokenStorage $tokenStorage,
+        UsageTrackingTokenStorage $tokenStorage
         )
     {
         $this->tokenStorage = $tokenStorage;
