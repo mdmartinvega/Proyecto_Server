@@ -258,7 +258,7 @@ class ApiBuddiesController extends AbstractController
 
         return $this->json(
             $userNormalizer->userNormalizer($user),
-            Response::HTTP_OK
+            Response::HTTP_CREATED
         );
     }
 
@@ -338,7 +338,7 @@ class ApiBuddiesController extends AbstractController
 
         return $this->json(
             $userNormalizer->userNormalizer($user),
-            Response::HTTP_OK
+            Response::HTTP_CREATED
         );
     }
 
