@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-07-2021 a las 12:40:22
+-- Tiempo de generación: 21-07-2021 a las 12:44:35
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.5
 
@@ -48,43 +48,6 @@ INSERT INTO `city` (`id`, `name`) VALUES
 (9, 'Bergen'),
 (10, 'El Cairo'),
 (11, 'Tallin');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `doctrine_migration_versions`
---
-
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Volcado de datos para la tabla `doctrine_migration_versions`
---
-
-INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20210624103359', '2021-06-30 12:18:10', 76),
-('DoctrineMigrations\\Version20210625105019', '2021-06-30 12:18:10', 43),
-('DoctrineMigrations\\Version20210625105652', '2021-06-30 12:18:10', 9),
-('DoctrineMigrations\\Version20210625115904', '2021-06-30 12:18:10', 59),
-('DoctrineMigrations\\Version20210629091430', '2021-06-30 12:18:10', 15),
-('DoctrineMigrations\\Version20210629102749', '2021-06-30 12:18:10', 10),
-('DoctrineMigrations\\Version20210629102939', '2021-06-30 12:18:10', 10),
-('DoctrineMigrations\\Version20210629105041', '2021-06-30 12:18:10', 9),
-('DoctrineMigrations\\Version20210630080340', '2021-06-30 12:18:10', 9),
-('DoctrineMigrations\\Version20210701111401', '2021-07-01 13:14:44', 87),
-('DoctrineMigrations\\Version20210704104259', '2021-07-04 12:43:12', 892),
-('DoctrineMigrations\\Version20210705090038', '2021-07-05 13:10:57', 109),
-('DoctrineMigrations\\Version20210709101721', '2021-07-09 12:18:05', 58),
-('DoctrineMigrations\\Version20210709102042', '2021-07-09 12:20:52', 51),
-('DoctrineMigrations\\Version20210709102306', '2021-07-09 12:23:12', 135),
-('DoctrineMigrations\\Version20210709112004', '2021-07-09 13:20:14', 48),
-('DoctrineMigrations\\Version20210709112109', '2021-07-09 13:21:20', 51),
-('DoctrineMigrations\\Version20210709112624', '2021-07-09 13:26:30', 125),
-('DoctrineMigrations\\Version20210712145828', '2021-07-13 11:59:27', 1155);
 
 -- --------------------------------------------------------
 
@@ -387,12 +350,6 @@ INSERT INTO `user_language` (`user_id`, `language_id`) VALUES
 --
 ALTER TABLE `city`
   ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `doctrine_migration_versions`
---
-ALTER TABLE `doctrine_migration_versions`
-  ADD PRIMARY KEY (`version`);
 
 --
 -- Indices de la tabla `interest`

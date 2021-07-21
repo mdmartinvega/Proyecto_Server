@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-07-2021 a las 12:40:22
+-- Tiempo de generación: 21-07-2021 a las 12:43:43
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.5
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -20,17 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `be_buddy`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `city`
---
-
-CREATE TABLE `city` (
-  `id` int(11) NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `city`
@@ -49,54 +39,6 @@ INSERT INTO `city` (`id`, `name`) VALUES
 (10, 'El Cairo'),
 (11, 'Tallin');
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `doctrine_migration_versions`
---
-
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Volcado de datos para la tabla `doctrine_migration_versions`
---
-
-INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20210624103359', '2021-06-30 12:18:10', 76),
-('DoctrineMigrations\\Version20210625105019', '2021-06-30 12:18:10', 43),
-('DoctrineMigrations\\Version20210625105652', '2021-06-30 12:18:10', 9),
-('DoctrineMigrations\\Version20210625115904', '2021-06-30 12:18:10', 59),
-('DoctrineMigrations\\Version20210629091430', '2021-06-30 12:18:10', 15),
-('DoctrineMigrations\\Version20210629102749', '2021-06-30 12:18:10', 10),
-('DoctrineMigrations\\Version20210629102939', '2021-06-30 12:18:10', 10),
-('DoctrineMigrations\\Version20210629105041', '2021-06-30 12:18:10', 9),
-('DoctrineMigrations\\Version20210630080340', '2021-06-30 12:18:10', 9),
-('DoctrineMigrations\\Version20210701111401', '2021-07-01 13:14:44', 87),
-('DoctrineMigrations\\Version20210704104259', '2021-07-04 12:43:12', 892),
-('DoctrineMigrations\\Version20210705090038', '2021-07-05 13:10:57', 109),
-('DoctrineMigrations\\Version20210709101721', '2021-07-09 12:18:05', 58),
-('DoctrineMigrations\\Version20210709102042', '2021-07-09 12:20:52', 51),
-('DoctrineMigrations\\Version20210709102306', '2021-07-09 12:23:12', 135),
-('DoctrineMigrations\\Version20210709112004', '2021-07-09 13:20:14', 48),
-('DoctrineMigrations\\Version20210709112109', '2021-07-09 13:21:20', 51),
-('DoctrineMigrations\\Version20210709112624', '2021-07-09 13:26:30', 125),
-('DoctrineMigrations\\Version20210712145828', '2021-07-13 11:59:27', 1155);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `interest`
---
-
-CREATE TABLE `interest` (
-  `id` int(11) NOT NULL,
-  `tag` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 --
 -- Volcado de datos para la tabla `interest`
 --
@@ -109,17 +51,6 @@ INSERT INTO `interest` (`id`, `tag`) VALUES
 (5, 'Cultural'),
 (6, 'Trámites'),
 (7, 'Idiomas');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `language`
---
-
-CREATE TABLE `language` (
-  `id` int(11) NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `language`
@@ -134,20 +65,6 @@ INSERT INTO `language` (`id`, `name`) VALUES
 (6, 'Japonés'),
 (7, 'Hindi'),
 (8, 'Francés');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `message`
---
-
-CREATE TABLE `message` (
-  `id` int(11) NOT NULL,
-  `sender_id` int(11) NOT NULL,
-  `receiver_id` int(11) NOT NULL,
-  `message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `message`
@@ -167,27 +84,6 @@ INSERT INTO `message` (`id`, `sender_id`, `receiver_id`, `message`, `created_at`
 (24, 1, 69, 'Hola, me gustaría hablar contigo', '2021-07-19 09:14:01'),
 (25, 1, 72, 'Buenas, ¿Hablamos?', '2021-07-19 09:26:46'),
 (32, 84, 70, 'Hola Javier, me gustaría contactar contigo.', '2021-07-20 19:02:21');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `user`
---
-
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `roles` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `age` smallint(6) DEFAULT NULL,
-  `bio` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `years_living` int(11) DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city_id` int(11) NOT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `user`
@@ -217,17 +113,6 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `name`, `last_name`, `ag
 (89, 'samir@gmail.com', '[\"ROLE_USER\"]', '$2y$13$uxpXHY.Gyf7UdNkYuKkV2OLs3tj6AITDM6cRqKLj9yNR1fOt2H45i', 'Samir', 'Kaisukar', 27, 'Hola! Soy Samir y vivo en la India pero me mudaré en pocas semanas a Berlín ya que tengo familia allí y quiero buscar una oportunidad de trabajo. Necesitaría ayuda en los trámites que seguir para ello, temas de vivienda, bancos y documentación y si es posible conocer gente y hacer una inmersión cultutal de la ciudad para poder conocer su cultura y su política. Muchas gracias!', NULL, '60f7e313dc5e6.jpg', 6, NULL),
 (90, 'ricardo@gmail.com', '[\"ROLE_USER\"]', '$2y$13$7Kb7fxpcdzPhi6lzmr55ZO6jOxkVfIW6GjjYrrPQJUCpYJh2b8j76', 'Ricardo', 'Hernández', 39, 'Me llamo Ricardo, vivo en Barcelona pero me mudaré en 2 meses a Munich para estudiar un máster de organización de empresas. Necesito ayuda con los trámites a seguir una vez aterrice allí y con el idioma ya que mi alemás es básico. Puedo hacer intercambio con inglés o portugés y además me encantaría conocer gente con la que salir y recorrer la ciudad y alrededores. Estamos en contacto!', NULL, '60f7e3e6a7846.jpg', 7, NULL),
 (91, 'gara@gmail.com', '[\"ROLE_USER\"]', '$2y$13$lMGUpyfng8zoFQP2W0SN3O0G7T92ou11Zgs6/k3R9vxky5B18B.pW', 'Gara', 'Real', 42, 'Hola!!! me mudo a Málaga en 2 semanas, soy de Alicante y me gustaría conocer gente por allí para salir y recorrer la ciudad y los alrededores. Me gusta viajar, salir con mis amigos y hacer cenitas en casa ya que me encanta cocinar. Contactamos?', NULL, '60f7f4a20c005.jpg', 1, NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `user_interest`
---
-
-CREATE TABLE `user_interest` (
-  `user_id` int(11) NOT NULL,
-  `interest_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `user_interest`
@@ -296,17 +181,6 @@ INSERT INTO `user_interest` (`user_id`, `interest_id`) VALUES
 (91, 2),
 (91, 4),
 (91, 6);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `user_language`
---
-
-CREATE TABLE `user_language` (
-  `user_id` int(11) NOT NULL,
-  `language_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `user_language`
@@ -377,131 +251,7 @@ INSERT INTO `user_language` (`user_id`, `language_id`) VALUES
 (91, 1),
 (91, 2),
 (91, 8);
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `city`
---
-ALTER TABLE `city`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `doctrine_migration_versions`
---
-ALTER TABLE `doctrine_migration_versions`
-  ADD PRIMARY KEY (`version`);
-
---
--- Indices de la tabla `interest`
---
-ALTER TABLE `interest`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `language`
---
-ALTER TABLE `language`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `message`
---
-ALTER TABLE `message`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_B6BD307FF624B39D` (`sender_id`),
-  ADD KEY `IDX_B6BD307FCD53EDB6` (`receiver_id`);
-
---
--- Indices de la tabla `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`),
-  ADD KEY `IDX_8D93D6498BAC62AF` (`city_id`);
-
---
--- Indices de la tabla `user_interest`
---
-ALTER TABLE `user_interest`
-  ADD PRIMARY KEY (`user_id`,`interest_id`),
-  ADD KEY `IDX_8CB3FE67A76ED395` (`user_id`),
-  ADD KEY `IDX_8CB3FE675A95FF89` (`interest_id`);
-
---
--- Indices de la tabla `user_language`
---
-ALTER TABLE `user_language`
-  ADD PRIMARY KEY (`user_id`,`language_id`),
-  ADD KEY `IDX_345695B5A76ED395` (`user_id`),
-  ADD KEY `IDX_345695B582F1BAF4` (`language_id`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `city`
---
-ALTER TABLE `city`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT de la tabla `interest`
---
-ALTER TABLE `interest`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT de la tabla `language`
---
-ALTER TABLE `language`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT de la tabla `message`
---
-ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT de la tabla `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `message`
---
-ALTER TABLE `message`
-  ADD CONSTRAINT `FK_B6BD307FCD53EDB6` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `FK_B6BD307FF624B39D` FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`);
-
---
--- Filtros para la tabla `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `FK_8D93D6498BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`);
-
---
--- Filtros para la tabla `user_interest`
---
-ALTER TABLE `user_interest`
-  ADD CONSTRAINT `FK_8CB3FE675A95FF89` FOREIGN KEY (`interest_id`) REFERENCES `interest` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `FK_8CB3FE67A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `user_language`
---
-ALTER TABLE `user_language`
-  ADD CONSTRAINT `FK_345695B582F1BAF4` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `FK_345695B5A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
