@@ -63,21 +63,53 @@ class ApiBuddiesController extends AbstractController
     UserRepository $userRepository, 
     UserNormalizer $userNormalizer, 
     CityRepository $cityRepository,
-    CityNormalizer $cityNormalizer): Response
+    CityNormalizer $cityNormalizer,
+    ValidatorInterface $validator): Response
     {
         $users = [];
         foreach($userRepository->findUsersByCity($id) as $user) {
             array_push($users, $userNormalizer->userNormalizer($user));
         };
 
+        $buddies = [];
+        $users = [];
+        foreach($userRepository->findUsersByCity($id) as $user) {
+            if (count($user->getRoles()) > 1) {
+                array_push($buddies, $userNormalizer->userNormalizer($user));
+            } elseif (count($user->getRoles()) === 1) {
+                array_push($users, $userNormalizer->userNormalizer($user));
+            }
+        };
+
+
         $city = $cityNormalizer->cityNormalizer($cityRepository->find($id));
 
         $resultado = [
         "total" =>  count($userRepository->findUsersByCity($id)),
         "city" => $city,
-        "results" => $users
+        "buddies" => $buddies,
+        "users" => $users
         // "results" => $userRepository->findUsersByRole($roles)
         ];
+
+        $errors = $validator->validate($user);
+
+        if(count($errors) > 0) {
+            $dataErrors = [];
+ 
+            /** @var \Symfony\Component\Validator\ConstraintViolation $error */
+            foreach($errors as $error) {
+                $dataErrors[] = $error->getMessage();
+            }
+ 
+            return $this->json([
+                'status' => 'error',
+                'data' => [
+                    'errors' => $dataErrors
+                    ]
+                ],
+                Response::HTTP_BAD_REQUEST);
+        } 
 
         return $this->json($resultado);
 

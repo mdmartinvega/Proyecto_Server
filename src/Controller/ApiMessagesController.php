@@ -61,25 +61,25 @@ class ApiMessagesController extends AbstractController
      * )
      */
 
-//     public function getMessageBySender(int $id, 
-//     MessageRepository $messageRepository, 
-//     MessageNormalizer $messageNormalizer): Response
-// {
-//     $result = $messageRepository->findMessagesBySender($id);
+     public function getMessageBySender(int $id, 
+        MessageRepository $messageRepository, 
+        MessageNormalizer $messageNormalizer): Response
+    {
+        $result = $messageRepository->findMessagesBySender($id);
 
-//     $data = [];
-    
+        $data = [];
+        
 
-//     foreach ($result as $message) {
-//         array_push($data, $messageNormalizer->messageNormalizer($message));
-//     }
+        foreach ($result as $message) {
+            array_push($data, $messageNormalizer->messageNormalizer($message));
+        }
 
-//     $resultado = [
-//         "total" => count($data),
-//         "messages" => $data];
+        $resultado = [
+            "total" => count($data),
+            "messages" => $data];
 
-//     return $this->json($resultado);
-// }
+        return $this->json($resultado);
+ } 
 
     /**
      * @Route(
