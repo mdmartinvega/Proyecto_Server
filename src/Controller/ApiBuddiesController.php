@@ -417,7 +417,7 @@ class ApiBuddiesController extends AbstractController
 
         return $this->json(
             null,
-            Response::HTTP_NO_CONTENT
+            Response::HTTP_CREATED
         );
     }
 
